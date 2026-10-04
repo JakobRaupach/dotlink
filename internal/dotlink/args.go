@@ -19,6 +19,8 @@ func (app *appEnv) fromArgs(args []string) error {
 	fl.BoolVar(&app.modeDelete, "D", false, "Delete symlinks")
 	fl.BoolVar(&app.modeReload, "R", false, "Reload symlinks (removes and recreates links)")
 	fl.BoolVar(&app.dryRun, "n", false, "Simulating the result. Not touching the file system")
+
+	usage(fl)
 	if err := fl.Parse(args); err != nil {
 		return err
 	}
@@ -84,4 +86,28 @@ func (app *appEnv) loadIgnoreMatcher(ignoreFlag string) error {
 
 	app.matcher = ignore.NewMatcher(patterns)
 	return nil
+}
+
+func usage(fl *flag.FlagSet) {
+	fl.Usage = func() {
+		fmt.Fprintf(fl.Output(), `dotlink - symlink the contents of a directory into a target directory
+
+Usage:
+  dotlink [flags] <src>
+
+Links every file and directory in <src> into the destination, mirroring the
+layout. Ignore patterns use gitignore syntax and are read from <src>/.ignore
+and the -i flag.
+
+Flags:
+`)
+		fl.PrintDefaults()
+		fmt.Fprintf(fl.Output(), `
+Examples:
+  dotlink .                     link the current directory into its parent
+  dotlink -dest ~ ~/dotfiles    link ~/dotfiles into the home directory
+  dotlink -i "*.swp,tmp/" .     ignore swap files and tmp/
+
+`)
+	}
 }
