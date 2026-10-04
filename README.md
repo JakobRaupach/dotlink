@@ -5,7 +5,7 @@ A small Go CLI that symlinks the contents of a source directory (e.g. your dotfi
 ## Install
 
 ```bash
-go install github.com/yourname/dotlink@latest
+go install github.com/JakobRaupach/dotlink@latest
 ```
 
 ## Usage
