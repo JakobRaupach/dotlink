@@ -29,7 +29,7 @@ func (app *appEnv) delete() error {
 			target = filepath.Join(filepath.Dir(dest), target)
 		}
 		if target == path {
-			return app.Remove(dest)
+			app.Remove(dest)
 		}
 		return nil
 	})
