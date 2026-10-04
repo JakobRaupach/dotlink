@@ -34,7 +34,7 @@ type appEnv struct {
 
 
 func (app *appEnv) fromArgs(args []string) error {
-	fl := flag.NewFlagSet("dotfilesmgr", flag.ContinueOnError)
+	fl := flag.NewFlagSet("dotlink", flag.ContinueOnError)
 	fl.StringVar(&app.destroot, "dest", "", "Destination of the symlinks")
 	var ignore string
 	fl.StringVar(&ignore, "i", "", "Files to ignore")
@@ -44,8 +44,8 @@ func (app *appEnv) fromArgs(args []string) error {
 		return err
 	}
 	if fl.NArg() != 1 {
-		fmt.Fprintf(os.Stderr, "usage : dotfilesmgr [flags] <src>\n")
-		return fmt.Errorf("usage : dotfilesmgr [flags] <src>")
+		fmt.Fprintf(os.Stderr, "usage : dotlink [flags] <src>\n")
+		return fmt.Errorf("usage : dotlink [flags] <src>")
 	}
 	app.srcroot = filepath.Clean(fl.Arg(0))
 	if _, err := os.Stat(app.srcroot); err != nil {
