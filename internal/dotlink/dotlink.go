@@ -5,10 +5,9 @@ import (
 	"io/fs"
 	"fmt"
 	"flag"
-	"bufio"
 	"path/filepath"
 	"strings"
-	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
+	"github.com/JakobRaupach/dotlink/internal/ignore"
 )
 
 func Run(args []string) int {
@@ -27,7 +26,7 @@ func Run(args []string) int {
 type appEnv struct {
 	srcroot 	string
 	destroot	string
-	matcher		gitignore.Matcher
+	matcher		*ignore.Matcher
 	verbose		bool
 	quiet		bool
 }
@@ -80,48 +79,30 @@ func (app *appEnv) fromArgs(args []string) error {
 	return nil
 }
 
-
-func loadIgnoreFile(path string, domain []string) ([]gitignore.Pattern, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	var ps []gitignore.Pattern
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		line := strings.TrimSpace(sc.Text())
-		if line == "" || strings.HasPrefix(line, "#") {
-			continue
-		}
-		ps = append(ps, gitignore.ParsePattern(line, domain))
-	}
-	return ps, sc.Err()
-}
-
-
-func loadIgnoreFlag(ignoreFlag string) []gitignore.Pattern {
-	var ps []gitignore.Pattern
+func loadIgnoreFlag(ignoreFlag string) []ignore.Pattern {
+	var ps []ignore.Pattern
 	for _, p := range strings.Split(ignoreFlag, ",") {
-		ps = append(ps, gitignore.ParsePattern(strings.TrimSpace(p),nil))
+		if pattern, ok := ignore.Compile(strings.TrimSpace(p)); ok {
+			ps = append(ps, pattern)
+		}
 	}
 	return ps
 }
 
 
 func (app *appEnv) loadIgnoreMatcher(ignoreFlag string) error {
-	domain := strings.Split(filepath.ToSlash(app.srcroot), "/")
-	patterns, err := loadIgnoreFile(filepath.Join(app.srcroot, ".ignore"), domain)
+	patterns, err := ignore.CompileFile(filepath.Join(app.srcroot, ".ignore"))
 	if err != nil { return err }
 	patterns = append(patterns, loadIgnoreFlag(ignoreFlag)...)
 
 	extra := []string{".ignore", ".git", ".gitignore", "README.*", "LICENSE.*", "RCS", "CVS"}
 	for _, line := range extra {
-		patterns = append(patterns, gitignore.ParsePattern(line, nil))
+		if p, ok := ignore.Compile(line); ok {
+			patterns = append(patterns, p)
+		}
 	}
 
-	app.matcher = gitignore.NewMatcher(patterns)
+	app.matcher = ignore.NewMatcher(patterns)
 	return nil
 }
 
@@ -139,7 +120,7 @@ func (app *appEnv) run() error {
 		}
 		symlink := filepath.Join(app.destroot, relPath)
 
-		if app.matcher.Match(strings.Split(filepath.ToSlash(relPath), "/"), false) {
+		if app.matcher.Ignored(filepath.ToSlash(relPath), d.IsDir()) {
 			if d.IsDir() {
 				app.printVerb("ignoring file %v", path)
 				return fs.SkipDir

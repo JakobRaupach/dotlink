@@ -2,7 +2,7 @@ package main
 
 import(
 	"os"
-	"github.com/JakobRaupach/dotlink/internal"
+	"github.com/JakobRaupach/dotlink/internal/dotlink"
 )
 
 func main() {
