@@ -82,7 +82,10 @@ func Compile(line string) (Pattern, bool) {
 			if strings.HasPrefix(class, "!") {
 				class = "^" + class[1:]
 			}
-			sb.WriteString("["+class+"]")
+			sb.WriteString("[")
+			sb.WriteString(class)
+			sb.WriteString("]")
+
 			i += j
 		case c == '\\' && i+1 < len(line):
 			i++
