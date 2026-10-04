@@ -1,3 +1,3 @@
 module github.com/JakobRaupach/dotlink
 
-go 1.19.8
+go 1.19
