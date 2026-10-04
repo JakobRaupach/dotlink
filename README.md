@@ -38,7 +38,7 @@ dotlink -dest ~ -i "*.swp,scripts/" ~/dotfiles
 
 ## Ignoring files
 
-Patterns use gitignore syntax (via [go-git](https://github.com/go-git/go-git)). They come from, in order of increasing priority:
+Patterns use gitignore syntax. They come from, in order of increasing priority:
 
 1. Built-in defaults: `.ignore`, `.git`, `.gitignore`, `README.*`, `LICENSE.*`, `RCS`, `CVS`
 2. A `.ignore` file in the root of `<src>`
