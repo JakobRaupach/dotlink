@@ -24,6 +24,7 @@ Flags must come before `<src>`.
 | `-q` | Only output errors | `false` |
 | `-D` | Delete symlinks linked to src | `false` |
 | `-R` | Reloads symlinks |  `false` |
+| `-n` | Simulates the result | `false` |
 
 ### Example
 
