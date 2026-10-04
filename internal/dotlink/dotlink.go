@@ -91,8 +91,8 @@ func loadIgnoreFlag(ignoreFlag string) []ignore.Pattern {
 
 
 func (app *appEnv) loadIgnoreMatcher(ignoreFlag string) error {
-	patterns, err := ignore.CompileFile(filepath.Join(app.srcroot, ".ignore"))
-	if err != nil { return err }
+	// error can be safely ignored, as '.ignore' is not required to be present
+	patterns, _ := ignore.CompileFile(filepath.Join(app.srcroot, ".ignore"))
 	patterns = append(patterns, loadIgnoreFlag(ignoreFlag)...)
 
 	extra := []string{".ignore", ".git", ".gitignore", "README.*", "LICENSE.*", "RCS", "CVS"}
