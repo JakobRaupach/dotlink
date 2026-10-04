@@ -12,6 +12,7 @@ type appEnv struct {
 	matcher		*ignore.Matcher
 	verbose		bool
 	quiet		bool
+	dryRun		bool
 	modeDelete	bool
 	modeReload	bool
 }

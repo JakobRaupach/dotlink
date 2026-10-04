@@ -42,8 +42,7 @@ func (app *appEnv) link() error {
 			return fs.SkipDir
 		}
 		app.printVerb(fmt.Sprintf("creating a symlink %v -> %v", symlink, path))
-		os.Symlink(path, symlink)
-		return nil
+		return app.Symlink(path, symlink)
 	})
 	return nil
 }

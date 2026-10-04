@@ -18,6 +18,7 @@ func (app *appEnv) fromArgs(args []string) error {
 	fl.BoolVar(&app.quiet, "q", false, "Output only errors")
 	fl.BoolVar(&app.modeDelete, "D", false, "Delete symlinks")
 	fl.BoolVar(&app.modeReload, "R", false, "Reload symlinks (removes and recreates links)")
+	fl.BoolVar(&app.dryRun, "n", false, "Simulating the result. Not touching the file system")
 	if err := fl.Parse(args); err != nil {
 		return err
 	}
