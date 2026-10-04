@@ -6,5 +6,5 @@ import(
 )
 
 func main() {
-	os.Exit(internal.Run(os.Args[1:]))
+	os.Exit(dotlink.Run(os.Args[1:]))
 }
