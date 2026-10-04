@@ -20,8 +20,10 @@ Flags must come before `<src>`.
 |---|---|---|
 | `-dest` | Directory to create the symlinks in | parent of `<src>` |
 | `-i` | Comma-separated ignore patterns | none |
-| `-v` | Verbose output | `true` |
+| `-v` | Verbose output | `false` |
 | `-q` | Only output errors | `false` |
+| `-D` | Delete symlinks linked to src | `false` |
+| `-R` | Reloads symlinks |  `false` |
 
 ### Example
 
