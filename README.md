@@ -46,4 +46,4 @@ Patterns use gitignore syntax (via [go-git](https://github.com/go-git/go-git)). 
 
 ## License
 
-[MIT](LICENSE.md)
+[MIT](LICENSE)
