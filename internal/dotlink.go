@@ -38,7 +38,7 @@ func (app *appEnv) fromArgs(args []string) error {
 	fl.StringVar(&app.destroot, "dest", "", "Destination of the symlinks")
 	var ignore string
 	fl.StringVar(&ignore, "i", "", "Files to ignore")
-	fl.BoolVar(&app.verbose, "v", true, "Verbose")
+	fl.BoolVar(&app.verbose, "v", false, "Verbose output")
 	fl.BoolVar(&app.quiet, "q", false, "Output only errors")
 	if err := fl.Parse(args); err != nil {
 		return err
