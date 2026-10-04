@@ -1,4 +1,4 @@
-module github.com/JakobRaupach/dotfilesmgr
+module github.com/JakobRaupach/dotlink
 
 go 1.26.5
 

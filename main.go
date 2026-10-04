@@ -2,9 +2,9 @@ package main
 
 import(
 	"os"
-	"github.com/JakobRaupach/dotfilesmgr/cli"
+	"github.com/JakobRaupach/dotlink/internal"
 )
 
 func main() {
-	os.Exit(cli.Run(os.Args[1:]))
+	os.Exit(internal.Run(os.Args[1:]))
 }
