@@ -47,7 +47,11 @@ func (app *appEnv) fromArgs(args []string) error {
 		fmt.Fprintf(os.Stderr, "usage : dotlink [flags] <src>\n")
 		return fmt.Errorf("usage : dotlink [flags] <src>")
 	}
-	app.srcroot = filepath.Clean(fl.Arg(0))
+	srcroot, err := filepath.Abs(fl.Arg(0))
+	if err != nil {
+		return err
+	}
+	app.srcroot = srcroot
 	if _, err := os.Stat(app.srcroot); err != nil {
 		fmt.Fprintf(os.Stderr, "%q is not a valid path\n", app.srcroot)
 		flag.Usage()
@@ -55,7 +59,13 @@ func (app *appEnv) fromArgs(args []string) error {
 	}
 
 	if app.destroot == "" {
-		app.destroot = filepath.Dir(filepath.Clean(app.srcroot))
+		app.destroot = filepath.Dir(app.srcroot)
+	} else {
+		destroot, err := filepath.Abs(app.destroot)
+		if err != nil {
+			return err
+		}
+		app.destroot = destroot
 	}
 
 	if err := app.loadIgnoreMatcher(ignore); err != nil {
@@ -124,6 +134,9 @@ func (app *appEnv) run() error {
 		}
 		relPath, err := filepath.Rel(app.srcroot, path)
 		if err != nil { return err }
+		if relPath == "." {
+			return nil
+		}
 		symlink := filepath.Join(app.destroot, relPath)
 
 		if app.matcher.Match(strings.Split(filepath.ToSlash(relPath), "/"), false) {
